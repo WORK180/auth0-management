@@ -2,8 +2,9 @@
 name = "auth0-management"
 version = "0.0.5"
 authors = ["Marvin Countryman <me@maar.vin>"]
-edition = "2018"
+edition = "2021"
 description = "An unofficial client for Auth0 Management API."
+rust-version = "1.61.0"
 
 readme = "./README.md"
 license = "MIT"
