@@ -23,6 +23,7 @@ pub use users_find::*;
 use crate::{Auth0Client, Auth0Error, Auth0RequestSimple, Auth0Result};
 use serde::de::DeserializeOwned;
 use std::sync::Arc;
+use crate::user_reset_password::UserResetPassword;
 
 pub mod permissions;
 pub mod user;
@@ -33,6 +34,7 @@ pub mod user_get;
 pub mod user_logs_get;
 pub mod user_update;
 pub mod users_find;
+pub mod user_reset_password;
 
 /// Users manager
 pub struct UsersManager(Arc<Auth0Client>);
@@ -53,6 +55,16 @@ impl UsersManager {
   /// * `create:users`
   pub fn create(&self) -> UserCreate<'_, (), ()> {
     UserCreate::new(&self.0)
+  }
+
+  /// Trigger a password reset for a given user.
+  ///
+  /// # Arguments
+  /// * `id` - The id of the user to delete.
+  /// # Scopes
+  /// * `create:users`
+  pub fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> UserResetPassword<'_> {
+    UserResetPassword::new(&self.0, email, connection, client_id)
   }
 
   /// Delete a user.

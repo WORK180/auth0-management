@@ -1,10 +1,11 @@
 //! Create a new user.
+use std::io::Read;
 use reqwest::Method;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 use crate::users::User;
-use crate::{Auth0Client, Auth0Result};
+use crate::{Auth0Client, Auth0Error, Auth0ErrorResponse, Auth0Result};
 
 /// Create a new user for a given [database](https://auth0.com/docs/connections/database) or
 /// [passwordless](https://auth0.com/docs/connections/passwordless) connection.
