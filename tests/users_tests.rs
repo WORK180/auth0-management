@@ -29,7 +29,6 @@
 //  let _reset_password = auth0
 //     .users
 //     .reset_password(&user.email , "Username-Password-Authentication", env::var("AUTH0_CLIENT_ID"))
-//     .send()
 //     .await
 //     .expect("Failed to trigger reset password.");
 

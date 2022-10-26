@@ -1,8 +1,8 @@
 //! Trigger password reset.
-use reqwest::Method;
+use reqwest::{Method, RequestBuilder};
 use serde::{Serialize};
 
-use crate::{Auth0Client, Auth0Request, Auth0Result};
+use crate::{Auth0Client, Auth0Request, Auth0RequestBuilder, Auth0Result};
 
 /// Trigger password reset.
 #[derive(Serialize)]
@@ -28,13 +28,10 @@ impl<'a> UserResetPassword<'a> {
     }
 }
 
-impl<'a> UserResetPassword<'a> {
-    /// Send
-    pub async fn send(&self) -> Auth0Result<String>
-    {
-        self
-            .client
-            .send(self.client.begin(Method::POST, "dbconnections/change_password").json(self))
-            .await
+impl Auth0RequestBuilder for UserResetPassword {
+    fn build(&self, client: &Auth0Client) -> RequestBuilder {
+        client
+            .begin(Method::POST, "dbconnections/change_password")
+            .json(self)
     }
 }
