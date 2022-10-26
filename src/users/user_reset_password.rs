@@ -6,21 +6,16 @@ use crate::{Auth0Client, Auth0Request, Auth0RequestBuilder, Auth0Result};
 
 /// Trigger password reset.
 #[derive(Serialize)]
-pub struct UserResetPassword<'a> {
-    #[serde(skip_serializing)]
-    client: &'a Auth0Client,
-
+pub struct UserResetPassword {
     email: String,
     connection: String,
     client_id: String,
 }
 
-impl<'a> UserResetPassword<'a> {
+impl UserResetPassword {
     /// Create reset password request.
-    pub fn new(client: &'a Auth0Client, email: &str, connection: &str, client_id: &str) -> Self {
+    pub fn new(email: &str, connection: &str, client_id: &str) -> Self {
         Self {
-            client,
-
             email: email.to_owned(),
             connection: connection.to_owned(),
             client_id: client_id.to_owned(),

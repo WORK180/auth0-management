@@ -63,8 +63,8 @@ impl UsersManager {
   /// * `id` - The id of the user to delete.
   /// # Scopes
   /// * `create:users`
-  pub fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> UserResetPassword<'_> {
-    UserResetPassword::new(&self.0, email, connection, client_id)
+  pub async fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> Auth0Result<String> {
+    UserResetPassword::new(email, connection, client_id).send_to(&self.0).await
   }
 
   /// Delete a user.
