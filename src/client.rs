@@ -1,6 +1,8 @@
 //! Auth0 request client.
 use reqwest::{Client, Method, RequestBuilder};
+use reqwest::header::CONTENT_TYPE;
 use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 
 use crate::rate::{RateLimit, RateLimitResponse};
 use crate::token::TokenManager;
@@ -15,6 +17,10 @@ pub struct Auth0Client {
   client: Client,
   domain: String,
 }
+
+// Object for auth0 response for when only a string is returned
+#[derive(Serialize, Deserialize)]
+pub struct Auth0MessageResponse { message: String}
 
 impl Auth0Client {
   /// Create Auth0 client
@@ -39,12 +45,18 @@ impl Auth0Client {
       .await?;
 
     if res.status().is_success() {
+      let headers = res.headers().to_owned();
+      let res_is_json = headers.contains_key(CONTENT_TYPE) && headers[CONTENT_TYPE] == "application/json; charset=utf-8";
       let body = res.rate_limit(&self.rate)?.bytes().await?;
       let body = body.to_vec();
       let body = std::str::from_utf8(&body).unwrap();
-      let body = if body.is_empty() { "null" } else { body };
 
-      Ok(serde_json::from_str::<R>(body)?)
+      let body: &str = if body.is_empty() { "null" } else { body };
+
+      Ok( if res_is_json { serde_json::from_str::<R>(body)? } else {
+        let message = Auth0MessageResponse {message: body.to_string()};
+        serde_json::from_str::<R>(&*serde_json::to_string(&message)?)?
+      } )
     } else {
       let body = res.bytes().await?;
       let body = body.to_vec();

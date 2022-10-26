@@ -20,7 +20,7 @@ pub use user_update::*;
 #[doc(inline)]
 pub use users_find::*;
 
-use crate::{Auth0Client, Auth0Error, Auth0RequestSimple, Auth0Result};
+use crate::{Auth0Client, Auth0Error, Auth0MessageResponse, Auth0RequestSimple, Auth0Result};
 use serde::de::DeserializeOwned;
 use std::sync::Arc;
 use crate::user_reset_password::UserResetPassword;
@@ -60,10 +60,12 @@ impl UsersManager {
   /// Trigger a password reset for a given user.
   ///
   /// # Arguments
-  /// * `id` - The id of the user to delete.
+  /// * `email` - The email of the user to reset the password.
+  /// * `connection` - The database connection required for the user.
+  /// * `client_id` - The auth0 client id.
   /// # Scopes
   /// * `create:users`
-  pub async fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> Auth0Result<String> {
+  pub async fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> Auth0Result<Auth0MessageResponse> {
     UserResetPassword::new(email, connection, client_id).send_to(&self.0).await
   }
 
