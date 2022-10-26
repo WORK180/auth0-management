@@ -2,7 +2,7 @@
 use reqwest::{Method, RequestBuilder};
 use serde::{Serialize};
 
-use crate::{Auth0Client, Auth0Request, Auth0RequestBuilder, Auth0Result};
+use crate::{Auth0Client, Auth0RequestBuilder};
 
 /// Trigger password reset.
 #[derive(Serialize)]
