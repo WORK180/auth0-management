@@ -20,7 +20,7 @@ pub struct Auth0Client {
 
 // Object for auth0 response for when only a string is returned
 #[derive(Serialize, Deserialize)]
-pub struct Auth0MessageResponse { message: String}
+pub struct Auth0MessageResponse { pub message: String}
 
 impl Auth0Client {
   /// Create Auth0 client
