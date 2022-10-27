@@ -1,8 +1,6 @@
 //! Auth0 request client.
-use reqwest::{Client, Method, RequestBuilder};
-use reqwest::header::CONTENT_TYPE;
-use serde::de::DeserializeOwned;
-use serde::{Deserialize, Serialize};
+use reqwest::{Client, Method, RequestBuilder, header::CONTENT_TYPE};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 use crate::rate::{RateLimit, RateLimitResponse};
 use crate::token::TokenManager;
@@ -51,12 +49,9 @@ impl Auth0Client {
       let body = body.to_vec();
       let body = std::str::from_utf8(&body).unwrap();
 
-      let body: &str = if body.is_empty() { "null" } else { body };
+      let body: &str = if body.is_empty() { "null" } else if res_is_json { body } else { &serde_json::to_string(body)? };
 
-      Ok( if res_is_json { serde_json::from_str::<R>(body)? } else {
-        let message = Auth0MessageResponse {message: body.to_string()};
-        serde_json::from_str::<R>(&*serde_json::to_string(&message)?)?
-      } )
+      Ok(serde_json::from_str::<R>(body)?)
     } else {
       let body = res.bytes().await?;
       let body = body.to_vec();
