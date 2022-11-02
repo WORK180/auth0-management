@@ -20,10 +20,12 @@ pub use user_update::*;
 #[doc(inline)]
 pub use users_find::*;
 
-use crate::{Auth0Client, Auth0Error, Auth0MessageResponse, Auth0RequestSimple, Auth0Result};
+use crate::user_reset_password::UserResetPassword;
+use crate::{
+  Auth0Client, Auth0Error, Auth0MessageResponse, Auth0RequestSimple, Auth0Result,
+};
 use serde::de::DeserializeOwned;
 use std::sync::Arc;
-use crate::user_reset_password::UserResetPassword;
 
 pub mod permissions;
 pub mod user;
@@ -32,9 +34,9 @@ pub mod user_delete;
 pub mod user_enrollments_get;
 pub mod user_get;
 pub mod user_logs_get;
+pub mod user_reset_password;
 pub mod user_update;
 pub mod users_find;
-pub mod user_reset_password;
 
 /// Users manager
 pub struct UsersManager(Arc<Auth0Client>);
@@ -65,8 +67,15 @@ impl UsersManager {
   /// * `client_id` - The auth0 client id.
   /// # Scopes
   /// * `create:users`
-  pub async fn reset_password(&self, email: &str, connection: &str, client_id: &str) -> Auth0Result<Auth0MessageResponse> {
-    UserResetPassword::new(email, connection, client_id).send_to(&self.0).await
+  pub async fn reset_password(
+    &self,
+    email: &str,
+    connection: &str,
+    client_id: &str,
+  ) -> Auth0Result<Auth0MessageResponse> {
+    UserResetPassword::new(email, connection, client_id)
+      .send_to(&self.0)
+      .await
   }
 
   /// Delete a user.

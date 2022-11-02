@@ -53,16 +53,16 @@ impl Auth0Client {
       let body = body.to_vec();
       let body = std::str::from_utf8(&body).unwrap();
 
-      let json_body = serde_json::to_string(body)?;
-      let body: &str = if body.is_empty() {
-        "null"
+      // Note the multiple return points. Different ways were attempted, but
+      // Rust forced the early unnecessary parsing of the body.
+      if body.is_empty() {
+        Ok(serde_json::from_str::<R>("null")?)
       } else if res_is_json {
-        body
+        Ok(serde_json::from_str::<R>(body)?)
       } else {
-        &json_body
-      };
-
-      Ok(serde_json::from_str::<R>(body)?)
+        let json_body = serde_json::to_string(body)?;
+        Ok(serde_json::from_str::<R>(&json_body)?)
+      }
     } else {
       let body = res.bytes().await?;
       let body = body.to_vec();
