@@ -46,15 +46,12 @@ impl Auth0Client {
       .await?;
 
     if res.status().is_success() {
-      let headers = res.headers().to_owned();
-      let res_is_json = headers.contains_key(CONTENT_TYPE)
-        && headers[CONTENT_TYPE] == "application/json; charset=utf-8";
+      let res_is_json = res.headers().contains_key(CONTENT_TYPE)
+        && res.headers()[CONTENT_TYPE] == "application/json; charset=utf-8";
       let body = res.rate_limit(&self.rate)?.bytes().await?;
       let body = body.to_vec();
       let body = std::str::from_utf8(&body).unwrap();
 
-      // Note the multiple return points. Different ways were attempted, but
-      // Rust forced the early unnecessary parsing of the body.
       if body.is_empty() {
         Ok(serde_json::from_str::<R>("null")?)
       } else if res_is_json {
