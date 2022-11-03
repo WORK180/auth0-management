@@ -21,9 +21,7 @@ pub use user_update::*;
 pub use users_find::*;
 
 use crate::user_reset_password::UserResetPassword;
-use crate::{
-  Auth0Client, Auth0Error, Auth0MessageResponse, Auth0RequestSimple, Auth0Result,
-};
+use crate::{Auth0Client, Auth0Error, Auth0RequestSimple, Auth0Result};
 use serde::de::DeserializeOwned;
 use std::sync::Arc;
 
@@ -72,7 +70,7 @@ impl UsersManager {
     email: &str,
     connection: &str,
     client_id: &str,
-  ) -> Auth0Result<Auth0MessageResponse> {
+  ) -> Auth0Result<()> {
     UserResetPassword::new(email, connection, client_id)
       .send_to(&self.0)
       .await

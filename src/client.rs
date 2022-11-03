@@ -1,6 +1,6 @@
 //! Auth0 request client.
 use reqwest::{header::CONTENT_TYPE, Client, Method, RequestBuilder};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::de::DeserializeOwned;
 
 use crate::rate::{RateLimit, RateLimitResponse};
 use crate::token::TokenManager;
@@ -14,13 +14,6 @@ pub struct Auth0Client {
   token: TokenManager,
   client: Client,
   domain: String,
-}
-
-/// Object for auth0 response for when only a string is returned
-#[derive(Serialize, Deserialize)]
-pub struct Auth0MessageResponse {
-  /// the message of the response
-  pub message: String,
 }
 
 impl Auth0Client {
