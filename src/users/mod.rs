@@ -126,7 +126,7 @@ impl UsersManager {
     A: DeserializeOwned + Send + Sync,
     U: DeserializeOwned + Send + Sync,
   {
-    GetUserByEmail::new(email).send_to(&self.0).await
+    GetUserByEmail::new(email.as_ref()).send_to(&self.0).await
   }
 
   /// Retrieve log events for a specific user.
