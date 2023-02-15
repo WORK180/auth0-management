@@ -8,7 +8,8 @@ pub struct Identity {
   provider: String,
   #[serde(rename = "isSocial")]
   is_social: bool,
-  connection: String,
+  /// The database connection of this identity.
+  pub connection: String,
 }
 
 /// User
