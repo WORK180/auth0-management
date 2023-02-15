@@ -14,8 +14,19 @@ pub struct UsersFind<'a> {
 
   #[serde(flatten)]
   page: Page,
-  #[serde(skip_serializing_if = "Sort::is_emtpy")]
+  #[serde(skip_serializing_if = "Sort::is_empty")]
   sort: Sort,
+
+  /// Connection filter.
+  #[serde(skip_serializing_if = "String::is_empty")]
+  connection: String,
+
+  /// Query in Lucene query string syntax. Some query types cannot be used on metadata fields, for details see Searchable Fields.
+  #[serde(skip_serializing_if = "String::is_empty")]
+  q: String,
+
+  #[serde(skip_serializing_if = "String::is_empty")]
+  search_engine: String,
 }
 
 impl<'a> UsersFind<'a> {
@@ -26,6 +37,9 @@ impl<'a> UsersFind<'a> {
 
       page: Default::default(),
       sort: Default::default(),
+      connection: Default::default(),
+      q: Default::default(),
+      search_engine: "v3".to_string(),
     }
   }
 }
