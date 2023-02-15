@@ -3,7 +3,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 /// User identity.
-#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Identity {
   provider: String,
   #[serde(rename = "isSocial")]
@@ -13,7 +13,7 @@ pub struct Identity {
 }
 
 /// User
-#[derive(Deserialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct User<AppMetadata, UserMetadata> {
   /// ID of the user which can be used when interacting with other APIs.
   pub user_id: String,
