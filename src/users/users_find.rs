@@ -41,7 +41,7 @@ impl<'a> UsersFind<'a> {
 
   /// Query in Lucene query string syntax.
   /// Some query types cannot be used on metadata fields, for details see Searchable Fields.
-  pub fn q(&mut self, q: &str) -> &mut Self {
+  pub fn lucene_query(&mut self, q: &str) -> &mut Self {
     self.q = Some(q.to_owned());
     self
   }
