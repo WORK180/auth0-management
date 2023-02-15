@@ -28,7 +28,7 @@ pub struct UsersFind<'a> {
 
 impl<'a> UsersFind<'a> {
   /// Create find users request.
-  pub fn new<S: AsRef<Option<String>>>(client: &'a Auth0Client) -> Self {
+  pub fn new(client: &'a Auth0Client) -> Self {
     Self {
       client,
 
