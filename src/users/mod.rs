@@ -202,7 +202,7 @@ impl UsersManager {
   /// # Scopes
   /// * `read:users`
   /// * `read:user_idp_tokens`
-  pub fn find(&self, q: Option<String>) -> UsersFind<'_> {
+  pub fn find<S: AsRef<Option<String>>>(&self, q: S) -> UsersFind<'_> {
     UsersFind::new(&self.0, q)
   }
 }
