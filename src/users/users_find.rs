@@ -27,21 +27,15 @@ pub struct UsersFind<'a> {
 
 impl<'a> UsersFind<'a> {
   /// Create find users request.
-  pub fn new(client: &'a Auth0Client) -> Self {
+  pub fn new(client: &'a Auth0Client, q: Option<String>) -> Self {
     Self {
       client,
 
       page: Default::default(),
       sort: Default::default(),
-      q: Default::default(),
+      q: q.unwrap_or_default(),
       search_engine: "v3".to_string(),
     }
-  }
-
-  /// Set a lucene query string for the user find request.
-  pub fn lucene_query(mut self, q: String) -> Self {
-    self.q = q;
-    self
   }
 }
 
