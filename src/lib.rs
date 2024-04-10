@@ -66,6 +66,7 @@
 #[doc(inline)]
 pub use api::*;
 pub use builder::*;
+pub use client::*;
 pub use error::*;
 pub use page::*;
 pub use request::*;
